@@ -4,12 +4,26 @@ echo "Welcome To Gambler"
 
 #Constant
 BET=1
-STAKE=100
 
+#Varible
+stake=100
+
+function getDailyResult()
+{
+higherResult=$(( stake + stake / 2 ))
+lowerResult=$(( stake / 2 ))
+
+while [ $higherResult -gt $stake ] && [ $lowerResult -lt $stake ]
+do
 checkResult=$(( $RANDOM % 2 ))
 case $checkResult in
 	0)
-		echo "Win" ;;
+		((stake++)) ;;
 	1)
-		echo "Loss" ;;
+		((stake--)) ;;
 esac
+done
+echo $stake
+}
+
+getDailyResult
