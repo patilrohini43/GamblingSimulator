@@ -4,26 +4,40 @@ echo "Welcome To Gambler"
 
 #Constant
 BET=1
+DAY=20
 
 #Varible
-stake=100
+win=0
+lost=0
+totalAmount=0
 
 function getDailyResult()
 {
-higherResult=$(( stake + stake / 2 ))
-lowerResult=$(( stake / 2 ))
-
-while [ $higherResult -gt $stake ] && [ $lowerResult -lt $stake ]
+declare -A GameDictionary
+for (( i=0; i<=$DAY; i++ ))
 do
-checkResult=$(( $RANDOM % 2 ))
-case $checkResult in
-	0)
-		((stake++)) ;;
-	1)
-		((stake--)) ;;
-esac
+	stake=100
+	higherResult=$(( stake + stake / 2 ))
+	lowerResult=$(( stake / 2 ))
+	while [ $higherResult -gt $stake ] && [ $lowerResult -lt $stake ]
+	do
+		checkResult=$(( $RANDOM % 2 ))
+		case $checkResult in
+		1)
+			((stake++))
+			((win++)) ;;
+		0)
+			((stake--))
+			((lost++)) ;;
+		esac
+	done
+		totalAmount=$(( 100  - $stake ))
+		GameDictionary[$i]=$totalAmount
+		echo $totalAmount
 done
-echo $stake
+		echo ${GameDictionary[@]}
 }
 
+
 getDailyResult
+
