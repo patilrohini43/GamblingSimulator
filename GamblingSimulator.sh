@@ -12,6 +12,7 @@ lost=0
 totalAmount=0
 
 declare -A GameDictionary
+
 function getDailyResult()
 {
 for (( i=0; i<=$DAY; i++ ))
@@ -32,21 +33,28 @@ do
 		esac
 	done
 		totalAmount=$(( 100  - $stake ))
-		GameDictionary[$i]=$totalAmount
+		GameDictionary["Day"$i]=$totalAmount
 done
 		echo ${GameDictionary[@]}
 }
 
+getMonthlyResult(){
 
-getDailyResult
+len=${#GameDictionary[@]}
+for(( i=0; i<$len; i++ ))
+do
+	echo "day_$i ==== ${GameDictionary[Day$i]} "
+done
+}
 
-winValue=$( printf '%s\n' ${GameDictionary[@]} | sort -n | tail -1 )
-echo $winValue
-lossValue=$( printf '%s\n' ${GameDictionary[@]} | sort -n | head -1 )
-echo $lossValue
-
+getProfit()
+{
 profitValue=$( printf '%s\n' ${GameDictionary[@]} | awk '{sum+=$0}END{print sum}' )
 echo $profitValue
+}
 
+###########  Main Method #################
 
-
+getDailyResult
+getMonthlyResult
+getProfit
