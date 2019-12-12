@@ -39,9 +39,8 @@ done
 }
 
 getMonthlyResult(){
-
 len=${#GameDictionary[@]}
-for(( i=0; i<$len; i++ ))
+for(( i=1; i<$len; i++ ))
 do
 	echo "day_$i ==== ${GameDictionary[Day$i]} "
 done
@@ -53,8 +52,23 @@ profitValue=$( printf '%s\n' ${GameDictionary[@]} | awk '{sum+=$0}END{print sum}
 echo $profitValue
 }
 
-###########  Main Method #################
+findDay()
+{
+len=${#GameDictionary[@]}
+for(( i=2; i<$len; i++ ))
+do
+  day=$(( $i - 1 ))
+	GameDictionary[Day$i]=$(( ${GameDictionary[Day$i]} + ${GameDictionary[Day$day]} ))
+done
+	echo ${GameDictionary[@]}
+}
 
+###########  Main Method ################
 getDailyResult
 getMonthlyResult
 getProfit
+findDay
+for (( i=0; i<20; i++))
+do
+	echo "	Day $i" ${GameDictionary[Day$i]}
+done | sort -k3 -nr |awk 'NR==20{ print "UnLucky"  $0 } AND NR==1{ print "Lucky" $0 }'
