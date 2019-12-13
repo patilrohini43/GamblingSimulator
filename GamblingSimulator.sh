@@ -7,8 +7,6 @@ BET=1
 DAY=20
 
 #Varible
-win=0
-lost=0
 totalAmount=0
 
 declare -A GameDictionary
@@ -25,18 +23,32 @@ do
 		checkResult=$(( $RANDOM % 2 ))
 		case $checkResult in
 		1)
-			((stake++))
-			((win++)) ;;
+			stake=$(( $stake + $BET )) ;;
 		0)
-			((stake--))
-			((lost++)) ;;
+			stake=$(( $stake - $BET )) ;;
 		esac
 	done
-		totalAmount=$(( 100  - $stake ))
-		GameDictionary["Day"$i]=$totalAmount
+totalAmount=$(( 100  - $stake ))
+GameDictionary["Day"$i]=$totalAmount
 done
+
 len=${#GameDictionary[@]}
 for(( i=1; i<$len; i++ ))
+do
+	echo "day_$i ==== ${GameDictionary[Day$i]} "
+done
+}
+
+getGamblingProfit()
+{
+profitValue=$( printf '%s\n' ${GameDictionary[@]} | awk '{sum+=$0}END{print sum}' )
+echo "Profit Value: $profitValue"
+}
+
+getLuckiestAndLuckiestDay()
+{
+len=${#GameDictionary[@]}
+for(( i=1; i<$len-1; i++ ))
 do
 	echo "day_$i ==== ${GameDictionary[Day$i]} "
 done
@@ -49,20 +61,30 @@ profitValue=$( printf '%s\n' ${GameDictionary[@]} | awk '{sum+=$0}END{print sum}
 echo $profitValue
 }
 
-
-###########  Main Method ################
-getDailyResult
-getProfit
-
+getMonthDaysWinLoss()
+{
 len=${#GameDictionary[@]}
 for(( i=2; i<$len; i++ ))
 do
-  day=$(( $i - 1 ))
+ 	day=$(( $i - 1))
+	echo "DayWise $day"
 	GameDictionary[Day$i]=$(( ${GameDictionary[Day$i]} + ${GameDictionary[Day$day]} ))
 done
-	echo ${GameDictionary[@]}
+echo ${GameDictionary[@]}
+}
 
+getLuckyAndUnLuckyDay()
+{
+len=${#GameDictionary[@]}
 for (( i=1; i<$len; i++))
 do
 	echo "	Day $i" ${GameDictionary[Day$i]}
 done | sort -k3 -nr |awk 'NR==20{ print "UnLucky"  $0 } AND NR==1{ print "Lucky" $0 }'
+}
+
+###########  Main Method ################
+getDailyResult
+getGamblingProfit
+getMonthDaysWinLoss
+getLuckyAndUnLuckyDay
+
