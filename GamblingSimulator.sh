@@ -35,10 +35,6 @@ do
 		totalAmount=$(( 100  - $stake ))
 		GameDictionary["Day"$i]=$totalAmount
 done
-		echo ${GameDictionary[@]}
-}
-
-getMonthlyResult(){
 len=${#GameDictionary[@]}
 for(( i=1; i<$len; i++ ))
 do
@@ -46,14 +42,18 @@ do
 done
 }
 
+
 getProfit()
 {
 profitValue=$( printf '%s\n' ${GameDictionary[@]} | awk '{sum+=$0}END{print sum}' )
 echo $profitValue
 }
 
-findDay()
-{
+
+###########  Main Method ################
+getDailyResult
+getProfit
+
 len=${#GameDictionary[@]}
 for(( i=2; i<$len; i++ ))
 do
@@ -61,14 +61,8 @@ do
 	GameDictionary[Day$i]=$(( ${GameDictionary[Day$i]} + ${GameDictionary[Day$day]} ))
 done
 	echo ${GameDictionary[@]}
-}
 
-###########  Main Method ################
-getDailyResult
-getMonthlyResult
-getProfit
-findDay
-for (( i=0; i<20; i++))
+for (( i=1; i<$len; i++))
 do
 	echo "	Day $i" ${GameDictionary[Day$i]}
 done | sort -k3 -nr |awk 'NR==20{ print "UnLucky"  $0 } AND NR==1{ print "Lucky" $0 }'
