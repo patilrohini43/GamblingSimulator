@@ -42,23 +42,7 @@ done
 getGamblingProfit()
 {
 profitValue=$( printf '%s\n' ${GameDictionary[@]} | awk '{sum+=$0}END{print sum}' )
-echo "Profit Value: $profitValue"
-}
-
-getLuckiestAndLuckiestDay()
-{
-len=${#GameDictionary[@]}
-for(( i=1; i<$len-1; i++ ))
-do
-	echo "day_$i ==== ${GameDictionary[Day$i]} "
-done
-}
-
-
-getProfit()
-{
-profitValue=$( printf '%s\n' ${GameDictionary[@]} | awk '{sum+=$0}END{print sum}' )
-echo $profitValue
+echo $profitValue"
 }
 
 getMonthDaysWinLoss()
@@ -73,18 +57,9 @@ done
 echo ${GameDictionary[@]}
 }
 
-getLuckyAndUnLuckyDay()
-{
-len=${#GameDictionary[@]}
-for (( i=1; i<$len; i++))
-do
-	echo "	Day $i" ${GameDictionary[Day$i]}
-done | sort -k3 -nr |awk 'NR==20{ print "UnLucky"  $0 } AND NR==1{ print "Lucky" $0 }'
-}
-
-###########  Main Method ################
+############## Main Method #############
 getDailyResult
 getGamblingProfit
 getMonthDaysWinLoss
-getLuckyAndUnLuckyDay
+
 
