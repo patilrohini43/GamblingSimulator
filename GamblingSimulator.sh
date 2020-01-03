@@ -42,7 +42,7 @@ done
 getGamblingProfit()
 {
 profitValue=$( printf '%s\n' ${GameDictionary[@]} | awk '{sum+=$0}END{print sum}' )
-echo $profitValue"
+echo $profitValue
 }
 
 getMonthDaysWinLoss()
@@ -50,8 +50,7 @@ getMonthDaysWinLoss()
 len=${#GameDictionary[@]}
 for(( i=2; i<$len; i++ ))
 do
- 	day=$(( $i - 1))
-	echo "DayWise $day"
+ 	day=$(( $i - 1 ))
 	GameDictionary[Day$i]=$(( ${GameDictionary[Day$i]} + ${GameDictionary[Day$day]} ))
 done
 echo ${GameDictionary[@]}
@@ -61,5 +60,3 @@ echo ${GameDictionary[@]}
 getDailyResult
 getGamblingProfit
 getMonthDaysWinLoss
-
-
