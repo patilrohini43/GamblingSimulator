@@ -77,8 +77,9 @@ gamblingMain()
 	if [[ $profit -gt 0 ]]
 	then
 		read -p "Would you like to play game 1.Play Game 2.Stop" choice
+		echo $choice
 		case $choice in
-			1)  gambling ;;
+			1)  gamblingMain ;;
 			2)  echo "Gambling Stop" ;;
 		esac
 	else
